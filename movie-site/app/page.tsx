@@ -1,23 +1,51 @@
+"use client"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 
 const movies = [
   {id: 1, title: "Sinners", image:"/images/Sinners.jpg", rank: 1 },
   {id: 2, title: "Jurassic Park", image:"/images/Jurassicpark.jpg", rank: 2 },
   {id: 3, title: "tangled", image:"/images/tangled.jpg", rank: 3 },
-  {id: 4, title: "KungFu Panda", image:"/images/KungFu.jpg", rank: 4 },
+  {id: 4, title: "Kung Fu Panda", image:"/images/KungFu.jpg", rank: 4 },
   {id: 5, title: "Shrek", image:"/images/Shrek.jpg", rank: 5 },
   {id: 6, title: "Obsession", image:"/images/Obsession.jpg", rank: 6 },
 ]
 
 export default function Home() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isResetting, setIsResetting] = useState(false)
+  const [visible, setVisible] = useState(false)
+
+ useEffect(() => {
+  const timer = setTimeout(() => {
+    if (currentIndex < movies.length - 1) {
+      setIsResetting(false)
+      setCurrentIndex(currentIndex + 1)
+    } else {
+      setIsResetting(true)
+      setCurrentIndex(0)
+    }
+  }, 10000)
+
+  return () => clearTimeout(timer)
+}, [currentIndex])
+
+
+useEffect(() => {
+  setVisible(false)
+  const fadeTimer = setTimeout(() => setVisible(true), 10000)
+  return () => clearTimeout(fadeTimer)
+}, [currentIndex])
+
   return (
     <>
-    <div className="relative w-full h-screen bg-linear-to-r from-fuchsia-500 via-red-600 to-orange-400">
+    <div className="relative w-full h-screen bg-black">
         <Image
-        src="/images/Sinners.jpg"
+        key={currentIndex}
+        src={movies[currentIndex].image}
         alt="movie"
         fill
-        className="object-cover"/>
+        className={`object-cover transition-opacity duration-1000 ${visible ? "opacity-0" : "opacity-100"}`}/>
         <div className="absolute inset-0 bg-linear-to-t from-black via-black/50 to-transparent"/>
         <div className="absolute inset-0" style={{
         background: "radial-gradient(ellipse at center, transparent 70%, rgba(0,0,0,0.8) 100%)"
@@ -26,7 +54,7 @@ export default function Home() {
 
       <div className="flex overflow-x-auto gap-4 absolute bottom-20 left-20 rounded">
         {movies.map((movies) => (
-          <div key={movies.id} className="relative">
+          <div key={movies.id} className={`relative transition-all duration-500 ${currentIndex === movies.id - 1 ? "scale-110" : "scale-100"}`}>
 
             <div className="absolute top-0 left-0 bg-red-600 text-white text-s p-1 z-5 rounded-xl">
               TOP {movies.rank}
@@ -34,7 +62,7 @@ export default function Home() {
 
               <Image src={movies.image} alt={movies.title} width={240} height={360}
               className="rounded-xl"/>
-              <p>{movies.title}</p>
+              <p className="text-white">{movies.title}</p>
       </div>
       ))}
      </div>
