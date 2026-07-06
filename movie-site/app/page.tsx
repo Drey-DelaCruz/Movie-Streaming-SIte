@@ -1,97 +1,61 @@
 "use client"
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import MovieRows from "@/components/MovieRows"
 
 const movies = [
   {id: 1, title: "Sinners", image:"/images/Sinners.jpg", rank: 1 },
-  {id: 2, title: "Jurassic Park", image:"/images/Jurassicpark.jpg", rank: 2 },
-  {id: 3, title: "tangled", image:"/images/tangled.jpg", rank: 3 },
-  {id: 4, title: "Kung Fu Panda", image:"/images/KungFu.jpg", rank: 4 },
-  {id: 5, title: "Shrek", image:"/images/Shrek.jpg", rank: 5 },
+  {id: 2, title: "Jurassic Park", image:"/images/jurassicpark.jpg", rank: 2 },
+  {id: 3, title: "Shrek", image:"/images/shrek.jpg", rank: 3 },
+  {id: 4, title: "Kung Fu", image:"/images/KungFu.jpg", rank: 4 },
+  {id: 5, title: "Tangled", image:"/images/tangled.jpg", rank: 5 },
   {id: 6, title: "Obsession", image:"/images/Obsession.jpg", rank: 6 },
+  {id: 7, title: "Project Hail Mary", image:"/images/projectHailMary.jpg", rank: 7 },
+  {id: 8, title: "Goat", image:"/images/goat.jpg", rank: 8 },
+  {id: 9, title: "Minions (2015)", image:"/images/minions.jpg", rank: 9 },
+  {id: 10, title: "Tinker Bell", image:"/images/tinkerbell.jpg", rank: 10 },
 ]
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isResetting, setIsResetting] = useState(false)
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(true)
 
- useEffect(() => {
-  const timer = setTimeout(() => {
-    if (currentIndex < movies.length - 1) {
-      setIsResetting(false)
-      setCurrentIndex(currentIndex + 1)
-    } else {
-      setIsResetting(true)
-      setCurrentIndex(0)
-    }
-  }, 10000)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (currentIndex < movies.length - 1) {
+        setCurrentIndex(currentIndex + 1)
+      } else {
+        setCurrentIndex(0)
+      }
+    }, 10000)
+    return () => clearTimeout(timer)
+  }, [currentIndex])
 
-  return () => clearTimeout(timer)
-}, [currentIndex])
-
-
-useEffect(() => {
-  setVisible(false)
-  const fadeTimer = setTimeout(() => setVisible(true), 10000)
-  return () => clearTimeout(fadeTimer)
-}, [currentIndex])
+  useEffect(() => {
+    setVisible(false)
+    const fadeTimer = setTimeout(() => setVisible(true), 100)
+    return () => clearTimeout(fadeTimer)
+  }, [currentIndex])
 
   return (
     <>
-    <div className="relative w-full h-screen bg-black">
+      {/* Hero — stays here */}
+      <div className="relative w-full h-screen bg-black">
         <Image
-        key={currentIndex}
-        src={movies[currentIndex].image}
-        alt="movie"
-        fill
-        className={`object-cover transition-opacity duration-1000 ${visible ? "opacity-0" : "opacity-100"}`}/>
+          key={currentIndex}
+          src={movies[currentIndex].image}
+          alt="movie"
+          fill
+          className={`object-cover transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}/>
         <div className="absolute inset-0 bg-linear-to-t from-black via-black/50 to-transparent"/>
         <div className="absolute inset-0" style={{
-        background: "radial-gradient(ellipse at center, transparent 70%, rgba(0,0,0,0.8) 100%)"
-      }} />
-      
-
-      <div className="flex overflow-x-auto gap-4 absolute bottom-20 left-20 rounded">
-        {movies.map((movies) => (
-          <div key={movies.id} className={`relative transition-all duration-500 ${currentIndex === movies.id - 1 ? "scale-110" : "scale-100"}`}>
-
-            <div className="absolute top-0 left-0 bg-red-600 text-white text-s p-1 z-5 rounded-xl">
-              TOP {movies.rank}
-              </div>
-
-              <Image src={movies.image} alt={movies.title} width={240} height={360}
-              className="rounded-xl"/>
-              <p className="text-white">{movies.title}</p>
+          background: "radial-gradient(ellipse at center, transparent 70%, rgba(0,0,0,0.8) 100%)"
+        }} />
+        <div className="absolute bottom-10 left-0 right-0 w-full overflow-hidden z-20">
+        <MovieRows title="TOP 10 Today" movies={movies} currentIndex={currentIndex} />
       </div>
-      ))}
-     </div>
-     </div>
-
-     <div className="min-h-screen w-full relative bg-linear-to-r from-indigo-500 via-blue-600 to-green-400 flex
-     items-center justify-center text-center flex-col gap-10 text-white p-52">
-      <h1 className="text-7xl">Section 2</h1>
-      <p className="text-3x1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, 
-        dicta. Atque eos tempora exercitationem aliquid et vitae itaque excepturi, minima expedita dolor, 
-        obcaecati quas provident suscipit deserunt porro quos! A aperiam dolor illo doloremque reiciendis placeat 
-        adipisci sint cupiditate harum dolores soluta porro minus veniam consequuntur quos aliquam doloribus, possimus maxime nemo 
-        sit sequi laudantium blanditiis facilis quam! Nulla consectetur incidunt quos doloremque officia? Excepturi 
-        maiores eius minus maxime architecto quibusdam magnam voluptas error sit nostrum labore minima, expedita, ut eum, 
-        non doloribus molestias possimus. Veniam ut ducimus optio quidem iusto libero. 
-        Incidunt eius possimus facere fuga aliquid nulla quae libero minima quasi natus, 
-        ut debitis ratione velit voluptatibus recusandae nobis labore? Voluptatibus consequatur veniam sunt aliquid facere fuga, 
-        sapiente officia vel incidunt eligendi? Illum qui nobis minima, corrupti odit error provident eos molestias libero aliquid quibusdam 
-        quidem labore unde nam beatae quam animi dolores natus perferendis modi sed quis magni illo! Soluta nostrum repellat atque ducimus tempore mollitia. 
-        Fugiat quo impedit deleniti atque repellat, vero esse magnam voluptatum corrupti repellendus ex non qui earum reprehenderit laborum iusto aliquid eum. Adipisci, 
-        delectus amet! Eveniet consequatur possimus corporis, repellendus soluta, exercitationem laboriosam, 
-        esse iure architecto necessitatibus fugiat hic perferendis in totam?</p>
-     </div>
-
-     </>
-
-     
-
-     
-
+      </div>
+      
+    </>
   )
 }

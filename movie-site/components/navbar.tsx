@@ -6,7 +6,6 @@ import { Home, Film, Tv, Bookmark, History, Info } from "lucide-react"
 
 const listItems = [
   { label: "Movies",    icon: <Film /> },
-  { label: "Anime",    icon: <Tv /> },
   { label: "Bookmarks", icon: <Bookmark /> },
   { label: "History",   icon: <History /> },
   { label: "About",     icon: <Info /> },
