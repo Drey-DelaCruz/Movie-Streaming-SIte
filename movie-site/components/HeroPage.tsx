@@ -25,10 +25,10 @@ export default function HeroSection({ movies }) {
   }, [currentIndex])
 
   return (
-    <div className="relative w-full h-screen bg-black">
+    <div className="relative w-full h-[100vh] bg-black">
       <Image
         key={currentIndex}
-        src={movies[currentIndex].image}
+        src={`https://image.tmdb.org/t/p/original${movies[currentIndex].backdrop_path}`}
         alt="movie"
         fill
         className={`object-cover transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}/>
@@ -36,7 +36,26 @@ export default function HeroSection({ movies }) {
       <div className="absolute inset-0" style={{
         background: "radial-gradient(ellipse at center, transparent 70%, rgba(0,0,0,0.8) 100%)"
       }} />
-      <div className="absolute bottom-10 left-0 right-0 w-full overflow-hidden z-20">
+
+      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10" />
+<div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10" />
+
+    {/* Movie info — add here */}
+      <div className="absolute top-1/4 left-10 z-20 max-w-lg">
+        <h1 className="text-white text-6xl font-bold mb-2">
+          {movies[currentIndex].title}
+        </h1>
+        <p className="text-gray-300 text-sm mb-3 line-clamp-3">
+          {movies[currentIndex].overview}
+        </p>
+        <div className="flex items-center gap-2 text-yellow-400">
+          <span>★</span>
+          <span className="text-white">{movies[currentIndex].vote_average.toFixed(1)}</span>
+        </div>
+      </div>
+
+      {/* Card row — already here */}
+      <div className="absolute bottom-0 left-5 right-0 w-full z-20">
         <MovieRows title="TOP 10 Today" movies={movies} currentIndex={currentIndex} />
       </div>
     </div>
