@@ -10,7 +10,7 @@ export default function HistoryPage() {
   const router = useRouter()
 
   // format timestamp to readable date
-  const formatDate = (isoString) => {
+  const formatDate = (isoString: string) => {
     const date = new Date(isoString)
     return date.toLocaleDateString("en-US", {
       month: "short",
@@ -51,11 +51,11 @@ export default function HistoryPage() {
       {/* grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
         {history.map((movie) => (
-          <div key={movie.id} className="relative group cursor-pointer">
+          <div key={movie['id']} className="relative group cursor-pointer">
 
             <Image
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={movie.title}
+              src={`https://image.tmdb.org/t/p/w500${movie['poster_path']}`}
+              alt={movie['title']}
               width={192}
               height={288}
               className="rounded-xl w-full transition-all duration-300 group-hover:blur-sm"
@@ -69,7 +69,7 @@ export default function HistoryPage() {
             <button
               onClick={() => {
                 addToHistory(movie)
-                router.push(`/watch/${movie.id}`)
+                router.push(`/watch/${movie['id']}`)
               }}
               className="absolute inset-0 flex items-center justify-center
               opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 cursor-pointer">
@@ -88,9 +88,9 @@ export default function HistoryPage() {
               <X size={20} className="text-white" />
             </button>
 
-            <p className="text-white text-sm mt-1">{movie.title}</p>
+            <p className="text-white text-sm mt-1">{movie['title']}</p>
             {/* timestamp */}
-            <p className="text-gray-400 text-xs">{formatDate(movie.watchedAt)}</p>
+            <p className="text-gray-400 text-xs">{formatDate(movie['watchedAt'])}</p>
           </div>
         ))}
       </div>
