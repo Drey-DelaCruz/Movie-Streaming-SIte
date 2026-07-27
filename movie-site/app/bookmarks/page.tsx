@@ -22,11 +22,11 @@ export default function BookmarksPage() {
 
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
         {bookmarks.map((movie) => (
-          <div key={movie.id} className="relative group cursor-pointer">
+          <div key={movie['id']} className="relative group cursor-pointer">
             
             <Image
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={movie.title}
+              src={`https://image.tmdb.org/t/p/w500${movie['poster_path']}`}
+              alt={movie['title']}
               width={192}
               height={288}
               className="rounded-xl w-full transition-all duration-300 group-hover:blur-sm"
@@ -40,7 +40,7 @@ export default function BookmarksPage() {
             <button
                onClick={() => {
                     addToHistory(movie)
-                    router.push(`/watch/${movie.id}`)
+                    router.push(`/watch/${movie['id']}`)
                 }}
               className="absolute inset-0 flex items-center justify-center
               opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 cursor-pointer">
@@ -51,14 +51,14 @@ export default function BookmarksPage() {
             <button
               onClick={(e) => {
                 e.stopPropagation()
-                removeBookmark(movie.id)
+                removeBookmark(movie['id'])
               }}
               className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100
               transition-all duration-300 bg-black/50 rounded-full p-2 cursor-pointer">
               <Bookmark size={20} className="text-yellow-400 fill-yellow-400" />
             </button>
 
-            <p className="text-white text-sm mt-1">{movie.title}</p>
+            <p className="text-white text-sm mt-1">{movie['title']}</p>
           </div>
         ))}
       </div>
