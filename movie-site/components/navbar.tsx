@@ -2,15 +2,18 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { Home, Film, Tv, Bookmark, History, Info } from "lucide-react"
+import { CirclePlay, Film, Bookmark, History, Search } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 const listItems = [
-  { label: "Movies",    icon: <Film /> },
-  { label: "Bookmarks", icon: <Bookmark /> },
-  { label: "History",   icon: <History /> },
-  { label: "About",     icon: <Info /> },
+  { label: "Movies",    icon: <Film />,   href:"/ " },
+  { label: "Bookmarks", icon: <Bookmark />,   href:"/bookmarks" },
+  { label: "History",   icon: <History />,  href: "/history" },
+  { label: "Search",    icon: <Search />,   href: "/search" },
 ]
 export default function Navbar() {
+    const pathname = usePathname()
+    if (pathname.startsWith("/watch")) return null
     const [isOpen, setIsOpen] = useState(true)
 
   return (
@@ -18,7 +21,7 @@ export default function Navbar() {
       left-1/2 -translate-x-1/2 top-5
       text-white shadow-lg z-10 
       rounded-full
-      transition-all duration-800 ease-in-out
+      transition-all duration-800 ease-in-out z-50
       ${isOpen 
         ? "bg-black bg-opacity-60 justify-between items-center gap-6 py-3 px-10 w-auto" 
         : "bg-transparent w-12 h-12 p-0 items-center justify-center"}`}>
@@ -29,14 +32,16 @@ export default function Navbar() {
           : "opacity-0 scale-0 w-0 overflow-hidden"}`}>
 
         <ul className="flex gap-8 text-xl">
-          {listItems.map((item) => 
-            <li className="flex relative text-sm items-center group cursor-pointer font-bold gap-2" key={item.label}>
-              {item.icon}
-              {item.label}
-              <span className="absolute left-0 -bottom-1.25 w-0 h-1 rounded-xl bg-linear-to-r from-blue-500 to-green-500 transition-all duration-300
-              group-hover:w-full"></span>
-            </li>
-          )}
+          {listItems.map((item) => (
+            <Link href={item.href} key={item.label}>
+              <li className="flex relative text-sm items-center group cursor-pointer font-bold gap-2">
+                {item.icon}
+                {item.label}
+                <span className="absolute left-0 -bottom-1.25 w-0 h-1 rounded-xl bg-linear-to-r 
+                  from-blue-500 to-green-500 transition-all duration-300 group-hover:w-full"/>
+              </li>
+            </Link>
+          ))}
         </ul>
 
       </div>
@@ -50,7 +55,7 @@ export default function Navbar() {
         hover:shadow-green-500 shadow-blue-500 
         flex items-center justify-center
         transition-all duration-800">
-        <Home />
+        <CirclePlay />
       </button>
     </nav>
   )

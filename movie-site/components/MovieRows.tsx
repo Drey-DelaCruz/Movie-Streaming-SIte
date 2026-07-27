@@ -1,14 +1,22 @@
 "use client"
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { ChevronLeft, ChevronRight, Play, Bookmark } from "lucide-react"
+import { useBookmarks } from "@/hooks/useBookmarks"
+import { useHistory } from "@/hooks/useHistory"
+
 
 export default function MovieRows({ title, movies, currentIndex = -1, variant = "tall" }) {
   const [carouselIndex, setCarouselIndex] = useState(0)
   const [mounted, setMounted] = useState(false)
   const [visibleCards, setVisibleCards] = useState(movies.length)
+  const router = useRouter()
   const containerRef = useRef(null)
   const cardWidth = variant === "tall" ? 208 : 320
+  const { addBookmark, removeBookmark, isBookmarked } = useBookmarks()
+  const { addToHistory } = useHistory()
+
 
   useEffect(() => {
     setMounted(true)
@@ -56,7 +64,7 @@ export default function MovieRows({ title, movies, currentIndex = -1, variant = 
           <div className={`flex gap-4 ${mounted ? "transition-transform duration-500" : ""}`}
                style={{ transform: `translateX(-${carouselIndex * cardWidth}px)` }}>
             {movies.map((movie, index) => (
-              <div key={movie.id} className={`relative shrink-0 transition-all duration-500
+              <div key={movie.id} className={`relative group shrink-0 transition-all duration-500
                 ${currentIndex === index ? "scale-110" : "scale-100"}
                 ${variant === "tall" ? "w-48" : "w-72"}`}>
 
@@ -74,6 +82,35 @@ export default function MovieRows({ title, movies, currentIndex = -1, variant = 
                   height={variant === "tall" ? 288 : 225}
                   className="rounded-xl object-cover w-full"
                 />
+                {/* dark overlay — ADD HERE */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 
+                    transition-all duration-300 rounded-xl z-10" />
+
+               <button
+                  onClick={() => {
+                    addToHistory(movie)
+                    router.push(`/watch/${movie.id}`)
+                  }}
+                  className="absolute inset-0 flex items-center justify-center
+                  opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 cursor-pointer">
+                  <Play size={48} className="text-white" />
+                </button>
+
+              <button onClick={(e) => {
+                e.stopPropagation()
+                isBookmarked(movie.id) 
+                  ? removeBookmark(movie.id) 
+                  : addBookmark(movie)
+                }}
+                className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100
+                transition-all duration-300 bg-black/50 rounded-full p-2 cursor-pointer">
+                <Bookmark 
+                  size={20} 
+                  className={isBookmarked(movie.id) ? "text-yellow-400 fill-yellow-400" : "text-white"} 
+                />
+              </button>
+
+              
                 <p className="text-white text-sm mt-1">{movie.title}</p>
               </div>
             ))}
