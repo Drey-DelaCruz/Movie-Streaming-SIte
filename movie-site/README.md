@@ -2,6 +2,12 @@
 
 A movie browsing and discovery app built with Next.js, powered by the TMDB API.
 
+## Note
+
+The video player uses a third-party embed service which may display ads. 
+This is outside the scope of the project — the focus is on the frontend 
+architecture, API integration, and UI/UX.
+
 ## Features
 
 - Hero section with auto-rotating featured movies
