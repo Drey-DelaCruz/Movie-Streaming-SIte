@@ -3,10 +3,9 @@ import { useHistory } from "@/hooks/useHistory"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Play, Trash2, X } from "lucide-react"
-import { useHistory as useHistoryHook } from "@/hooks/useHistory"
 
 export default function HistoryPage() {
-  const { history, clearHistory, addToHistory } = useHistory()
+  const { history, clearHistory, addToHistory, removeFromHistory } = useHistory()
   const router = useRouter()
 
   // format timestamp to readable date
@@ -79,14 +78,13 @@ export default function HistoryPage() {
             {/* remove from history button */}
             <button
               onClick={(e) => {
-                e.stopPropagation()
-                // filter out this movie
-                clearHistory()
-              }}
+                  e.stopPropagation()
+                  removeFromHistory(movie.id)  // ← correct
+                }}
               className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100
-              transition-all duration-300 bg-black/50 rounded-full p-2 cursor-pointer">
-              <X size={20} className="text-white" />
-            </button>
+                transition-all duration-300 bg-black/50 rounded-full p-2 cursor-pointer">
+                <X size={20} className="text-white" />
+              </button>
 
             <p className="text-white text-sm mt-1">{movie['title']}</p>
             {/* timestamp */}
