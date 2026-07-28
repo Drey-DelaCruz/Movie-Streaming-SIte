@@ -1,28 +1,21 @@
 import { useState, useEffect } from "react"
+import { Movie } from "@/types/movie"
 
 export function useHistory() {
-  const [history, setHistory] = useState([])
-  const [mounted, setMounted] = useState(false)
+  const [history, setHistory] = useState<Movie[]>([])
 
-  // load from localStorage on mount
   useEffect(() => {
-    setMounted(true)
     const saved = localStorage.getItem("watchHistory")
     if (saved) setHistory(JSON.parse(saved))
   }, [])
 
-  // save to localStorage whenever history changes
   useEffect(() => {
-    if (mounted) {
-      localStorage.setItem("watchHistory", JSON.stringify(history))
-    }
-  }, [history, mounted])
+    localStorage.setItem("watchHistory", JSON.stringify(history))
+  }, [history])
 
-  const addToHistory = (movie) => {
+  const addToHistory = (movie: Movie) => {
     setHistory(prev => {
-      // remove old entry of same movie if it exists
       const filtered = prev.filter(m => m.id !== movie.id)
-      // add new entry at the top with timestamp
       return [{
         ...movie,
         watchedAt: new Date().toISOString()
@@ -30,9 +23,13 @@ export function useHistory() {
     })
   }
 
+  const removeFromHistory = (movieId: number) => {
+    setHistory(prev => prev.filter(m => m.id !== movieId))
+  }
+
   const clearHistory = () => {
     setHistory([])
   }
 
-  return { history, addToHistory, clearHistory }
+  return { history, addToHistory, removeFromHistory, clearHistory }
 }

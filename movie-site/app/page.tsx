@@ -1,12 +1,13 @@
 import HeroSection from "@/components/HeroPage"
 import MovieRows from "@/components/MovieRows"
+import { Movie } from "@/types/movie"
 
 async function getPopular() {
   const res = await fetch("https://api.themoviedb.org/3/movie/popular", {
     headers: { Authorization: `Bearer ${process.env.TMDB_API_TOKEN}` }
   })
   const data = await res.json()
-  return data.results.slice(0, 10).map((movie, index) => ({ ...movie, rank: index + 1 }))
+  return data.results.slice(0, 10).map((movie: Movie, index: number) => ({ ...movie, rank: index + 1 }))
 }
 
 async function getTopRated() {
@@ -15,7 +16,7 @@ async function getTopRated() {
     { headers: { Authorization: `Bearer ${process.env.TMDB_API_TOKEN}` } }
   )
   const data = await res.json()
-  return data.results.slice(0, 10).map((movie, index) => ({ ...movie, rank: index + 1 }))
+  return data.results.slice(0, 10).map((movie: Movie, index: number) => ({ ...movie, rank: index + 1 }))
 }
 
 async function getTrending() {
@@ -51,7 +52,7 @@ export default async function Home() {
 
       <div className="bg-black py-8 px-4">
         <div className="max-w-screen-2xl mx-auto px-4">
-          <HeroSection movies={popular} variant="tall" />
+          <HeroSection movies={popular} />
         <MovieRows title="Top Rated" movies={topRated} variant="wide"/>
         <MovieRows title="Trending Today" movies={nowTrending} variant="wide"/>
         <MovieRows title="Top Action" movies={action} variant="wide"/>

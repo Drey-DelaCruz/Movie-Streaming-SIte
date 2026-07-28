@@ -1,33 +1,27 @@
-"use client"
 import { useState, useEffect } from "react"
+import { Movie } from "@/types/movie"
 
 export function useBookmarks() {
-  const [bookmarks, setBookmarks] = useState([])
-  const [mounted, setMounted] = useState(false)
+  const [bookmarks, setBookmarks] = useState<Movie[]>([])
 
-  // wait for component to mount before reading localStorage
   useEffect(() => {
-    setMounted(true)
     const saved = localStorage.getItem("bookmarks")
     if (saved) setBookmarks(JSON.parse(saved))
   }, [])
 
-  // save to localStorage whenever bookmarks change
   useEffect(() => {
-    if (mounted) {
-      localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
-    }
-  }, [bookmarks, mounted])
+    localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+  }, [bookmarks])
 
-  const addBookmark = (movie) => {
+  const addBookmark = (movie: Movie) => {
     setBookmarks(prev => [...prev, movie])
   }
 
-  const removeBookmark = (movieId) => {
+  const removeBookmark = (movieId: number) => {
     setBookmarks(prev => prev.filter(m => m.id !== movieId))
   }
 
-  const isBookmarked = (movieId) => {
+  const isBookmarked = (movieId: number) => {
     return bookmarks.some(m => m.id === movieId)
   }
 
