@@ -14,29 +14,32 @@ type Movie = {
 
 export function useHistory() {
   const [history, setHistory] = useState<Movie[]>([])
+  const [loaded, setLoaded] = useState(false)  // ← add this
 
+  // load from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("watchHistory")
-    // eslint-disable-next-line
     if (saved) setHistory(JSON.parse(saved))
+    setLoaded(true)  // ← mark as loaded
   }, [])
 
+  // only save AFTER initial load
   useEffect(() => {
+    if (!loaded) return  // ← don't save until loaded
     localStorage.setItem("watchHistory", JSON.stringify(history))
-  }, [history])
+  }, [history, loaded])
 
   const addToHistory = (movie: Movie) => {
-      setHistory(prev => {
-        const filtered = prev.filter(m => m.id !== movie.id)
-        const newHistory = [{
-          ...movie,
-          watchedAt: new Date().toISOString()
-        }, ...filtered]
-        
-        localStorage.setItem("watchHistory", JSON.stringify(newHistory))
-        return newHistory
-      })
-    }
+    setHistory(prev => {
+      const filtered = prev.filter(m => m.id !== movie.id)
+      const newHistory = [{
+        ...movie,
+        watchedAt: new Date().toISOString()
+      }, ...filtered]
+      localStorage.setItem("watchHistory", JSON.stringify(newHistory))
+      return newHistory
+    })
+  }
 
   const removeFromHistory = (movieId: number) => {
     setHistory(prev => prev.filter(m => m.id !== movieId))
