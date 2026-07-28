@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Movie } from "@/types/movie"
+import { Movie } from "@/types"
 
 export function useHistory() {
   const [history, setHistory] = useState<Movie[]>([])

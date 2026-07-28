@@ -5,21 +5,27 @@ import { useRouter } from "next/navigation"
 import { ChevronLeft, ChevronRight, Play, Bookmark } from "lucide-react"
 import { useBookmarks } from "@/hooks/useBookmarks"
 import { useHistory } from "@/hooks/useHistory"
+import { Movie } from "@/types"
 
 
-export default function MovieRows({ title, movies, currentIndex = -1, variant = "tall" }) {
+export default function MovieRows({ title, movies, currentIndex = -1, variant = "tall" }:{
+  title: string
+  movies: Movie[]
+  currentIndex?: number
+  variant?: string
+}) {
   const [carouselIndex, setCarouselIndex] = useState(0)
   const [mounted, setMounted] = useState(false)
   const [visibleCards, setVisibleCards] = useState(movies.length)
   const router = useRouter()
-  const containerRef = useRef(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const cardWidth = variant === "tall" ? 208 : 320
   const { addBookmark, removeBookmark, isBookmarked } = useBookmarks()
   const { addToHistory } = useHistory()
 
 
   useEffect(() => {
-    setMounted(true)
+    setTimeout(() => setMounted(true), 0)
   }, [])
 
   useEffect(() => {

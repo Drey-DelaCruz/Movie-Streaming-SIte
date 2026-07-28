@@ -1,6 +1,6 @@
 import HeroSection from "@/components/HeroPage"
 import MovieRows from "@/components/MovieRows"
-import { Movie } from "@/types/movie"
+import { Movie } from "@/types"
 
 async function getPopular() {
   const res = await fetch("https://api.themoviedb.org/3/movie/popular", {
