@@ -90,7 +90,9 @@ export default function HistoryPage() {
 
             <p className="text-white text-sm mt-1">{movie['title']}</p>
             {/* timestamp */}
-            <p className="text-gray-400 text-xs">{formatDate(movie['watchedAt'])}</p>
+            {movie.watchedAt && (
+              <p className="text-gray-400 text-xs">{formatDate(movie.watchedAt)}</p>
+            )}
           </div>
         ))}
       </div>
