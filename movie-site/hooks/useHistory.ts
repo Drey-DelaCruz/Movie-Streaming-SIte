@@ -1,5 +1,16 @@
 import { useState, useEffect } from "react"
-import { Movie } from "@/types"
+
+type Movie = {
+  id: number
+  title: string
+  poster_path: string
+  backdrop_path: string
+  overview: string
+  vote_average: number
+  release_date: string
+  rank?: number
+  watchedAt?: string
+}
 
 export function useHistory() {
   const [history, setHistory] = useState<Movie[]>([])

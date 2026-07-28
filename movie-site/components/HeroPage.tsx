@@ -3,9 +3,21 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import MovieRows from "@/components/MovieRows"
 
-export default function HeroSection({ movies }) {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [visible, setVisible] = useState(true)
+type Movie = {
+  id: number
+  title: string
+  poster_path: string
+  backdrop_path: string
+  overview: string
+  vote_average: number
+  release_date: string
+  rank?: number
+  watchedAt?: string
+}
+
+export default function HeroSection({ movies }: { movies: Movie[] }) {
+  const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const [visible, setVisible] = useState<boolean>(true)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -19,6 +31,7 @@ export default function HeroSection({ movies }) {
   }, [currentIndex])
 
   useEffect(() => {
+    // eslint-disable-next-line
     setVisible(false)
     const fadeTimer = setTimeout(() => setVisible(true), 100)
     return () => clearTimeout(fadeTimer)
@@ -36,11 +49,8 @@ export default function HeroSection({ movies }) {
       <div className="absolute inset-0" style={{
         background: "radial-gradient(ellipse at center, transparent 70%, rgba(0,0,0,0.8) 100%)"
       }} />
-
       <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10" />
-<div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10" />
-
-    {/* Movie info — add here */}
+      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10" />
       <div className="absolute top-1/4 left-10 z-20 max-w-lg">
         <h1 className="text-white text-6xl font-bold mb-2">
           {movies[currentIndex].title}
@@ -53,8 +63,6 @@ export default function HeroSection({ movies }) {
           <span className="text-white">{movies[currentIndex].vote_average.toFixed(1)}</span>
         </div>
       </div>
-
-      {/* Card row — already here */}
       <div className="absolute bottom-0 left-5 right-0 w-full z-20">
         <MovieRows title="TOP 10 Today" movies={movies} currentIndex={currentIndex} />
       </div>

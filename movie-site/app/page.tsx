@@ -1,6 +1,17 @@
 import HeroSection from "@/components/HeroPage"
 import MovieRows from "@/components/MovieRows"
-import { Movie } from "@/types"
+
+type Movie = {
+  id: number
+  title: string
+  poster_path: string
+  backdrop_path: string
+  overview: string
+  vote_average: number
+  release_date: string
+  rank?: number
+  watchedAt?: string
+}
 
 async function getPopular() {
   const res = await fetch("https://api.themoviedb.org/3/movie/popular", {
@@ -16,7 +27,7 @@ async function getTopRated() {
     { headers: { Authorization: `Bearer ${process.env.TMDB_API_TOKEN}` } }
   )
   const data = await res.json()
-  return data.results.slice(0, 10).map((movie: Movie, index: number) => ({ ...movie, rank: index + 1 }))
+  return data.results.slice(0, 20)
 }
 
 async function getTrending() {
@@ -48,19 +59,17 @@ export default async function Home() {
 
   return (
     <>
-      
-
       <div className="bg-black py-8 px-4">
         <div className="max-w-screen-2xl mx-auto px-4">
           <HeroSection movies={popular} />
-        <MovieRows title="Top Rated" movies={topRated} variant="wide"/>
-        <MovieRows title="Trending Today" movies={nowTrending} variant="wide"/>
-        <MovieRows title="Top Action" movies={action} variant="wide"/>
-        <MovieRows title="Top Horror" movies={horror} variant="wide"/>
-        <MovieRows title="Top Romance" movies={romance} variant="wide"/>
-        <MovieRows title="Top Fantasy" movies={fantasy} variant="wide"/>
-        <MovieRows title="Top Sci-Fi" movies={scifi} variant="wide"/>
-      </div>
+          <MovieRows title="Top Rated" movies={topRated} variant="wide"/>
+          <MovieRows title="Trending Today" movies={nowTrending} variant="wide"/>
+          <MovieRows title="Top Action" movies={action} variant="wide"/>
+          <MovieRows title="Top Horror" movies={horror} variant="wide"/>
+          <MovieRows title="Top Romance" movies={romance} variant="wide"/>
+          <MovieRows title="Top Fantasy" movies={fantasy} variant="wide"/>
+          <MovieRows title="Top Sci-Fi" movies={scifi} variant="wide"/>
+        </div>
       </div>
     </>
   )
