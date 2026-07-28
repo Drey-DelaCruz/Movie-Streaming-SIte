@@ -2,7 +2,7 @@
 import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Image from "next/image"
-import { Search } from "lucide-react"
+import { Search, Play } from "lucide-react"
 
 type Movie = {
   id: number
@@ -79,7 +79,7 @@ function SearchContent() {
                   transition-all duration-300 rounded-xl" />
                 <div className="absolute inset-0 flex items-center justify-center
                   opacity-0 group-hover:opacity-100 transition-all duration-300 z-20">
-                  ▶
+                  <Play size={48} className="text-white" />
                 </div>
                 <p className="text-white text-sm mt-1">{movie.title}</p>
               </div>
