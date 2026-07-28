@@ -17,6 +17,7 @@ export function useHistory() {
 
   useEffect(() => {
     const saved = localStorage.getItem("watchHistory")
+    // eslint-disable-next-line
     if (saved) setHistory(JSON.parse(saved))
   }, [])
 
@@ -25,14 +26,17 @@ export function useHistory() {
   }, [history])
 
   const addToHistory = (movie: Movie) => {
-    setHistory(prev => {
-      const filtered = prev.filter(m => m.id !== movie.id)
-      return [{
-        ...movie,
-        watchedAt: new Date().toISOString()
-      }, ...filtered]
-    })
-  }
+      setHistory(prev => {
+        const filtered = prev.filter(m => m.id !== movie.id)
+        const newHistory = [{
+          ...movie,
+          watchedAt: new Date().toISOString()
+        }, ...filtered]
+        
+        localStorage.setItem("watchHistory", JSON.stringify(newHistory))
+        return newHistory
+      })
+    }
 
   const removeFromHistory = (movieId: number) => {
     setHistory(prev => prev.filter(m => m.id !== movieId))
