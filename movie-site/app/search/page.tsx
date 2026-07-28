@@ -51,16 +51,16 @@ export default function SearchPage() {
     {currentQuery && (
   <div className="w-full max-w-7xl mx-auto px-8 mt-8">
     <h2 className="text-white text-2xl font-bold border-l-4 border-red-600 pl-3 mb-6">
-      Results for "{currentQuery}"
+      Results for {`"${currentQuery}"`}
     </h2>
     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
       {results.map((movie) => (
-  <div key={movie.id} className="relative group cursor-pointer"
-    onClick={() => router.push(`/watch/${movie.id}`)}>
+  <div key={movie['id']} className="relative group cursor-pointer"
+    onClick={() => router.push(`/watch/${movie['id']}`)}>
     
     <Image
-      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-      alt={movie.title}
+      src={`https://image.tmdb.org/t/p/w500${movie['poster_path']}`}
+      alt={movie['title']}
       width={192}
       height={288}
       className="rounded-xl w-full transition-all duration-300 group-hover:blur-sm"
@@ -76,7 +76,7 @@ export default function SearchPage() {
       <Play size={48} className="text-white" />
     </div>
 
-    <p className="text-white text-sm mt-1">{movie.title}</p>
+    <p className="text-white text-sm mt-1">{movie['title']}</p>
   </div>
 ))}
     </div>
